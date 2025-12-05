@@ -1,0 +1,10 @@
+sources:
+  - name: raw                 # dbt'de kullanacağımız alias (şema adı)
+    schema: gz_raw_data_selen      # BigQuery'deki gerçek dataset adı
+    tables:
+      - name: sales           # dbt içinde alias
+        identifier: raw_gz_sales   # BigQuery'deki gerçek tablo adı
+      - name: product
+        identifier: raw_gz_product
+      - name: ship
+        identifier: raw_gz_ship

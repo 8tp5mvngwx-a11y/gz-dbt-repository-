@@ -1,9 +1,9 @@
 sources:
-  - name: raw                 # dbt'de kullanacağımız alias (şema adı)
-    schema: gz_raw_data_selen      # BigQuery'deki gerçek dataset adı
+  - name: raw # dbt'de kullanacağımız alias (şema adı)
+    schema: gz_raw_data_selen # BigQuery'deki gerçek dataset adı
     tables:
-      - name: sales           # dbt içinde alias
-        identifier: raw_gz_sales   # BigQuery'deki gerçek tablo adıdescription: sales of Greenweez / we have one row per product_id found in each orders_id
+      - name: sales # dbt içinde alias
+        identifier: raw_gz_sales # BigQuery'deki gerçek tablo adıdescription: sales of Greenweez / we have one row per product_id found in each orders_id
         description: sales of Greenweez / we have one row per product_id found in each orders_id
         columns:
           - name: date_date
@@ -16,29 +16,37 @@ sources:
             description: the amount paid by the customer to purchase the product. revenue = quantity * selling_price
           - name: quantity
             description: the quantity of products purchased for a given order
-      - name: product 
+        tests:
+          - unique:
+           column_name: "(orders_id || '-' || pdt_id)"
+          - dbt_utils.unique_combination_of_columns:
+           combination_of_columns:
+             - orders_id
+             - pdt_id
+
+      - name: product
         identifier: raw_gz_product
         description: products of Greenweez
         columns:
-        - name: products_id
-          description: Primary key
-          tests:
-            - unique
-            - not_null
-        - name: purchase_price
-          description: the purchase price of the product
+          - name: products_id
+            description: Primary key
+            tests:
+              - unique
+              - not_null
+          - name: purchase_price
+            description: the purchase price of the product
       - name: ship
         identifier: raw_gz_ship
         description: shipping data for Greenweez orders
         columns:
-        - name: orders_id
-          description: Primary key
-          tests:
-            - unique
-            - not_null
-        - name: shipping_fee
-          description: the price the customer pays for shipping
-        - name: log_cost
-          description: the cost of preparing the parcel in the distribution centre/warehouse
-        - name: ship_cost
-          description: shipping cost paid by Greenweez to the carrier/logistics provider
+          - name: orders_id
+            description: Primary key
+            tests:
+              - unique
+              - not_null
+          - name: shipping_fee
+            description: the price the customer pays for shipping
+          - name: log_cost
+            description: the cost of preparing the parcel in the distribution centre/warehouse
+          - name: ship_cost
+            description: shipping cost paid by Greenweez to the carrier/logistics provider

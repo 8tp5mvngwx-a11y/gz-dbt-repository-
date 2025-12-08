@@ -18,12 +18,11 @@ sources:
             description: the quantity of products purchased for a given order
         tests:
           - unique:
-           column_name: "(orders_id || '-' || pdt_id)"
+              column_name: "(orders_id || '-' || pdt_id)"
           - dbt_utils.unique_combination_of_columns:
-           combination_of_columns:
-             - orders_id
-             - pdt_id
-
+              combination_of_columns:
+                - orders_id
+                - pdt_id
       - name: product
         identifier: raw_gz_product
         description: products of Greenweez

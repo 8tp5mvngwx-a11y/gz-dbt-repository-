@@ -1,4 +1,5 @@
-SELECT *, 
+SELECT sales.*, 
+        product.purchase_price,
         ROUND ((sales.quantity * product.purchase_price),2) as purchase_cost,
         ROUND ((sales.revenue - (sales.quantity * product.purchase_price) ),2) as margin
 FROM {{ ref('stg_raw__sales')}} AS sales
